@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"time"
 )
 
 const (
@@ -70,6 +71,8 @@ func run(filename string, out io.Writer, skipPreview bool) error {
 		return nil
 	}
 
+	defer os.Remove(outName)
+
 	return preview(outName)
 }
 
@@ -111,12 +114,17 @@ func preview(fName string) error {
 	// Appending filename to parameters slice
 	cParams = append(cParams, cName)
 
-	// Locate executable in PATH
+	// Locating executable in PATH
 	cPath, err := exec.LookPath(cName)
 	if err != nil {
 		return err
 	}
 
-	// Open the file using default program
-	return exec.Command(cPath, cParams...).Run()
+	// Opening the file using default program
+	err = exec.Command(cPath, cParams...).Run()
+
+	// Giving the browser some time to open the file before deleting it
+	time.Sleep(2 * time.Second)
+
+	return err
 }
