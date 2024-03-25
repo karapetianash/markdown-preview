@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"github.com/microcosm-cc/bluemonday"
-	"github.com/russross/blackfriday/v2"
 	"io"
 	"os"
 	"os/exec"
 	"runtime"
 	"time"
+
+	"github.com/microcosm-cc/bluemonday"
+	"github.com/russross/blackfriday/v2"
 )
 
 const (
@@ -73,7 +74,7 @@ func run(filename string, out io.Writer, skipPreview bool) error {
 
 	defer os.Remove(outName)
 
-	return preview(outName)
+	return preview()
 }
 
 func parseContent(input []byte) []byte {
@@ -94,7 +95,7 @@ func saveHTML(outName string, htmlData []byte) error {
 	return os.WriteFile(outName, htmlData, 0664)
 }
 
-func preview(fName string) error {
+func preview() error {
 	cName := ""
 	cParams := make([]string, 0)
 
