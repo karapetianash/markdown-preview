@@ -45,6 +45,7 @@ func main() {
 	}
 }
 
+// run is a coordinating function
 func run(filename string, out io.Writer, skipPreview bool) error {
 	input, err := os.ReadFile(filename)
 	if err != nil {
@@ -77,6 +78,7 @@ func run(filename string, out io.Writer, skipPreview bool) error {
 	return preview()
 }
 
+// parseContent function parse Markdown into HTML
 func parseContent(input []byte) []byte {
 	// Parse the markdown file through blackfriday and bluemonday
 	// to generate a valid and safe HTML
@@ -91,10 +93,12 @@ func parseContent(input []byte) []byte {
 	return buffer.Bytes()
 }
 
+// saveHTML function saves result into a file
 func saveHTML(outName string, htmlData []byte) error {
 	return os.WriteFile(outName, htmlData, 0664)
 }
 
+// preview function runs executable command to show an HTML file
 func preview() error {
 	cName := ""
 	cParams := make([]string, 0)
